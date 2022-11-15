@@ -1,0 +1,145 @@
+<html data-cbscriptallow="true">
+<head></head>
+<body>
+    
+    
+    <blockquote><pre>
+    #!/usr/bin/perl -Tw 2:
+
+    use CGI;
+    use strict;
+    my $query = new CGI;
+    my $topic_directory = &quot;topics&quot;;
+    my $page_title = &quot;Message Board&quot;;
+    my @response_list = ();
+    my ($topic_title, $topic_author, $last_modified, $post);
+    my $need_header = 1;
+
+    if ($query-&gt;param('topic')) {
+      &amp;parse_topic(&amp;open_topic($query-&gt;param('topic')));
+      $page_title = $topic_title;
+      &amp;print_page_start;
+      &amp;print_topic;
+      &amp;print_response_form($query-&gt;param('topic'));
+      &amp;print_page_end;
+    }
+    else {
+      $page_title = &quot;Topic Index&quot;;
+      &amp;print_page_start;
+      $need_header = 0;
+      &amp;print_topic_index;
+      &amp;print_page_end;
+    }
+
+    sub print_page_start {
+      print $query-&gt;header;
+      print &quot;&lt;html&gt;\n&lt;head&gt;\n&lt;title&gt;$page_title&lt;/title&gt;\n&lt;/head&gt;\n&quot;;
+      print &quot;&lt;body&gt;\n&lt;h1&gt;$page_title&lt;/h1&gt;\n&quot;;
+    }
+
+    sub print_page_end {
+      print &quot;&lt;p&gt;&lt;a href=\&quot;display.pl\&quot;&gt;view response list&lt;/a&gt; |\n&quot;;
+      print &quot;&lt;a href=\&quot;post.pl\&quot;&gt;create new topic&lt;/a&gt;&lt;/p&gt;\n&quot;;
+      print &quot;&lt;/body&gt;\n&lt;/html&gt;\n&quot;;
+    }
+
+    sub print_topic_index {
+      eval {
+        opendir (TOPICS, &quot;$topic_directory&quot;)
+            or die &quot;Can't open $topic_directory&quot;;
+        my @topics = grep (/^.+\.xml$/, readdir (TOPICS));
+        print &quot;&lt;p&gt;\n&quot;;
+        foreach my $topic (@topics) {
+          $topic =~ s/(.+)\.xml/$1/;
+          &amp;parse_topic(&amp;open_topic($topic));
+          print &quot;&lt;b&gt;&lt;a href=\&quot;display.pl?topic=$topic\&quot;&gt;&quot;;
+          print &quot;$page_title&lt;/a&gt;&lt;/b&gt;, $topic_author&lt;br /&gt;\n&quot;;
+        }
+        print &quot;&lt;/p&gt;\n&quot;;
+      };
+    }
+
+    sub open_topic {
+      my $topic = shift(@_);
+      if ($topic =~ /^([-\@\w.]+)$/) {
+          $topic = $1;
+      }
+      else{
+        print &quot;&lt;p&gt;Tainted data submitted. Response not opened.&lt;/p&gt;\n&quot;;
+        return;
+      }
+      my $topic_file = &quot;$topic_directory/&quot; . $topic . &quot;.xml&quot;;
+      my @topic_text = ();
+      eval {
+        open (TOPIC, &quot;&lt; $topic_file&quot;)
+          or die &quot;Can't open $topic_file&quot;;
+        @topic_text = &lt;TOPIC&gt;;
+      };
+      if ($@) {
+        &amp;file_error($@);
+      }
+      return join(&quot;&quot;, @topic_text);
+    }
+
+    sub parse_topic {
+      my $topic_text = shift(@_);
+      if (!$topic_text) {
+        &amp;format_error(&quot;Empty topic file.&quot;);
+        return;
+      }
+      # Extract the topic title from the topic
+      if ($topic_text =~ /&lt;title&gt;(.*)&lt;\/title&gt;/s) {
+        $page_title = $1;
+        $topic_title = $1;
+      }
+      else {
+        &amp;format_error(&quot;Title not found.&quot;);
+        return;
+      }
+      # Extract the author from the topic
+      if ($topic_text =~ /&lt;author&gt;(.*)&lt;\/author&gt;/s) {
+        $topic_author = $1;
+      }
+      else {
+        &amp;format_error(&quot;Topic author not found.&quot;);
+        return;
+      }
+      # Extract the date when the file was last modified
+      if ($topic_text =~ /&lt;lastmodified&gt;(.*)&lt;\/lastmodified&gt;/s) {
+        $last_modified = $1;
+      }
+      else {
+        &amp;format_error(&quot;Last modified date not found.&quot;);
+        return;
+      }
+      # Extract the first post from the topic
+      if ($topic_text =~ /&lt;post&gt;(.*)&lt;\/post&gt;/s) {
+        $post = $1;
+      }
+      else {
+        &amp;format_error(&quot;Post not found.&quot;);
+        return;
+      }
+      while ($topic_text =~ /&lt;response&gt;(.*?)&lt;\/response&gt;/sg) {
+        my $response = $1;
+        if ($response =~ /&lt;responseauthor&gt;(.*)&lt;\/responseauthor&gt;/s) {
+            push @response_list, $1;
+        }
+        else {
+            &amp;format_error(&quot;Invalid response format (author).&quot;);
+            return;
+        }
+        if ($response =~ /&lt;responsepost&gt;(.*)&lt;\/responsepost&gt;/s) {
+            push @response_list, $1;
+        }
+        else {
+            &amp;format_error(&quot;Invalid response format (post).&quot;);
+            return;
+        }
+      }
+    }
+      </pre></blockquote>
+    
+     
+    </body></html>
+

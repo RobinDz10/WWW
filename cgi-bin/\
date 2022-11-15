@@ -1,0 +1,23 @@
+#!/usr/local/bin/python3
+import random
+from urllib.request import urlopen
+from PIL import Image
+
+print("Content-type:text/html\r\n\r\n")
+imageList = []
+imageList.append("https://logos-world.net/wp-content/uploads/2020/06/Real-Madrid-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/04/Barcelona-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/06/Sevilla-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Real-Betis-Logo.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/06/atletico-madrid-Logo.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Real-Sociedad-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Athletic-Bilbao-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Espanyol-Logo-700x394.png")
+index = int(random.randint(0, 8))
+
+print("""
+<h1> This is a La-Liga soccer team\n </h1>
+<head><title> La Liga Soccer Teams </title></head>
+""")
+image = Image.open(urlopen(imageList[index]))
+image

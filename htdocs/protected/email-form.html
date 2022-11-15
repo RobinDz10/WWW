@@ -1,0 +1,130 @@
+<html data-cbscriptallow="true">
+<head></head>
+<body>
+
+
+    <blockquote><pre>
+    #!/usr/bin/perl
+
+    use CGI;
+    use Net::SMTP;
+    my $query = new CGI;
+    my $smtp = Net::SMTP-&gt;new('localhost');
+    # Set to the name of the to address
+    my $address = &quot;duozwang\@iu.edu&quot;;
+    my $prof_address = &quot;d.adr.german\@gmail.com&quot;;
+    my $error_message = &quot;&quot;;
+    if (!$query-&gt;param()) {
+        &amp;print_page_start;
+        &amp;print_form;
+        &amp;print_page_end;
+    }
+    else {
+        &amp;set_form_vars;
+        if (!&amp;validate_form) {
+            &amp;send_email;
+            &amp;print_page_start;
+            &amp;print_success;
+            &amp;print_page_end;
+        }
+        else {
+            &amp;print_page_start;
+            &amp;print_error_message;
+            &amp;print_form;
+            &amp;print_page_end;
+        }
+    }
+
+    sub print_page_start {
+        print $query-&gt;header;
+        print &quot;&lt;html&gt;\n&quot;;
+        print &quot;&lt;head&gt;\n&quot;;
+        print &quot;&lt;title&gt;Email Form&lt;/title&gt;\n&quot;;
+        print &quot;&lt;/head&gt;\n&quot;;
+        print &quot;&lt;body&gt;\n&quot;;
+        print &quot;&lt;h1&gt;Email Form&lt;/h1&gt;\n&quot;;
+    }
+
+    sub print_page_end {
+        print &quot;&lt;/body&gt;\n&quot;;
+        print &quot;&lt;/html&gt;\n&quot;;
+    }
+
+
+    sub set_form_vars {
+        $from = $query-&gt;param('from');
+        $subject = $query-&gt;param('subject');
+        $body = $query-&gt;param('body');
+    }
+
+    sub print_form {
+        print &quot;&lt;form method=\&quot;post\&quot;&gt;\n&quot;;
+        print &quot;&lt;p&gt;\nYour email address:\n&quot;;
+        print &quot;&lt;input type=\&quot;text\&quot; name=\&quot;from\&quot; value=\&quot;$from\&quot; /&gt;\n&quot;;
+        print &quot;&lt;/p&gt;\n&quot;;
+        print &quot;&lt;p&gt;\nEmail subject:\n&quot;;
+        print &quot;&lt;input type=\&quot;text\&quot; name=\&quot;subject\&quot; value=\&quot;$subject\&quot; /&gt;\n&quot;;
+        print &quot;&lt;/p&gt;\n&quot;;
+        print &quot;&lt;p&gt;\nEmail body:&lt;br /&gt;\n&quot;;
+        print &quot;&lt;textarea name=\&quot;body\&quot; wrap=\&quot;physical\&quot; rows=\&quot;5\&quot; &quot;;
+        print &quot;cols=\&quot;70\&quot;&gt;&quot;;
+        print $body;
+        print &quot;&lt;/textarea&gt;\n&lt;/p&gt;\n&quot;;
+        print &quot;&lt;p&gt;\n&lt;input type=\&quot;submit\&quot; value=\&quot;Send Email\&quot; /&gt;\n&lt;/p&gt;\n&quot;;
+        print &quot;&lt;/form&gt;\n&quot;;
+    }
+
+    sub validate_form {
+        if (!$subject) {
+            $error_message .= &quot;&lt;li&gt;You need to enter a subject &quot;;
+            $error_message .= &quot;for your message.&lt;/li&gt;\n&quot;;
+        }
+        if (!$from) {
+            $error_message .= &quot;&lt;li&gt;You need to specify a recipient for &quot;;
+            $error_message .= &quot;the message.&lt;/li&gt;\n&quot;;
+        }
+        if ($from !~ /^[\w\.]+\@[\w\.]+$/) {
+            $error_message .= &quot;&lt;li&gt;The email address you entered is invalid,&quot;;
+            $error_message .= &quot;please enter a valid address. &lt;/li&gt;\n&quot;;
+        }
+        if (!$body) {
+            $error_message .= &quot;&lt;li&gt;You need to enter some text in the &quot;;
+            $error_message .= &quot;body of your message.&lt;/li&gt;\n&quot;;
+        }
+        return $error_message;
+    }
+
+
+    sub print_error_message {
+        print &quot;&lt;font color=\&quot;red\&quot;&gt;\n&quot;;
+        print &quot;&lt;p&gt;Please correct the following errors:&lt;/p&gt;\n&quot;;
+        print &quot;&lt;ul&gt;\n&quot;;
+        print $error_message;
+        print &quot;&lt;/ul&gt;\n&quot;;
+        print &quot;&lt;/font&gt;\n&quot;;
+    }
+
+    sub print_success {
+        print &quot;&lt;p&gt;An email with the subject \&quot;$subject\&quot; was sent to &quot;;
+        print &quot;$address from $from.&lt;/p&gt;\n&quot;;
+    }
+
+    sub send_email {
+        $smtp-&gt;mail($from);
+        $smtp-&gt;to($address);
+        $smtp-&gt;to($prof_address);
+        $smtp-&gt;data();
+        $smtp-&gt;datasend(&quot;From: $from\n&quot;);
+        $smtp-&gt;datasend(&quot;To: $address\n&quot;);
+        $smtp-&gt;datasend(&quot;To: $prof_address\n&quot;);
+        $smtp-&gt;datasend(&quot;Subject: $subject\n&quot;);
+        $smtp-&gt;datasend(&quot;\n&quot;);
+        $smtp-&gt;datasend($body);
+        $smtp-&gt;dataend();
+        $smtp-&gt;quit();
+    }
+
+    </pre></blockquote>
+
+
+</body></html>

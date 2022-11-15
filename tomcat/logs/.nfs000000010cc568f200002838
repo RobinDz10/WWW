@@ -1,0 +1,46 @@
+24-Mar-2022 23:21:49.045 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/9.0.60
+24-Mar-2022 23:21:49.047 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Mar 9 2022 14:52:25 UTC
+24-Mar-2022 23:21:49.047 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 9.0.60.0
+24-Mar-2022 23:21:49.047 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            5.4.0-99-generic
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/lib/jvm/java-11-openjdk-amd64
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.14+9-Ubuntu-0ubuntu2.20.04
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Ubuntu
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60
+24-Mar-2022 23:21:49.048 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60
+24-Mar-2022 23:21:49.056 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/u/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/conf/logging.properties
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+24-Mar-2022 23:21:49.057 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+24-Mar-2022 23:21:49.058 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+24-Mar-2022 23:21:49.058 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/u/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60
+24-Mar-2022 23:21:49.058 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/u/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60
+24-Mar-2022 23:21:49.058 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/u/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/temp
+24-Mar-2022 23:21:49.059 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The Apache Tomcat Native library which allows using OpenSSL was not found on the java.library.path: [/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib]
+24-Mar-2022 23:21:49.254 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-0.0.0.0-36799"]
+24-Mar-2022 23:21:49.269 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [341] milliseconds
+24-Mar-2022 23:21:49.302 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+24-Mar-2022 23:21:49.302 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.60]
+24-Mar-2022 23:21:49.336 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/ROOT]
+24-Mar-2022 23:21:49.508 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/ROOT] has finished in [171] ms
+24-Mar-2022 23:21:49.508 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/docs]
+24-Mar-2022 23:21:49.532 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/docs] has finished in [24] ms
+24-Mar-2022 23:21:49.532 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/examples]
+24-Mar-2022 23:21:49.731 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/examples] has finished in [199] ms
+24-Mar-2022 23:21:49.732 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/host-manager]
+24-Mar-2022 23:21:49.766 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/host-manager] has finished in [35] ms
+24-Mar-2022 23:21:49.766 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/manager]
+24-Mar-2022 23:21:49.787 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/manager] has finished in [21] ms
+24-Mar-2022 23:21:49.790 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-0.0.0.0-36799"]
+24-Mar-2022 23:21:49.815 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [545] milliseconds
+24-Mar-2022 23:21:52.250 WARNING [main] org.apache.catalina.core.StandardServer.await Invalid shutdown command [GET / HTTP/1.1] received
+24-Mar-2022 23:33:30.031 INFO [Catalina-utility-1] org.apache.catalina.users.MemoryUserDatabase.backgroundProcess Reloading memory user database [UserDatabase] from updated source [file:/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/conf/tomcat-users.xml]
+24-Mar-2022 23:33:30.038 INFO [Catalina-utility-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/stage01]
+24-Mar-2022 23:33:30.088 INFO [Catalina-utility-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/nfs/nfs7/home/duozwang/a348-spring-2021-workspace/apache-tomcat-9.0.60/webapps/stage01] has finished in [50] ms

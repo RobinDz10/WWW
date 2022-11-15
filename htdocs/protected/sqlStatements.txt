@@ -1,0 +1,82 @@
+List nominees with at least three votes.
+
+select player,count(*) as count from ratings group by player having count >= 3;
+
+MariaDB [exercise]> select player,count(*) as count from ratings group by player having count >= 3;
++---------+-------+
+| player  | count |
++---------+-------+
+| kdurant |     3 |
++---------+-------+
+1 row in set (0.00 sec)
+
+
+
+
+List nominees that received no votes.
+
+select username, count(*) from performers left join ratings on performers.username = ratings.player group by username having count(*) = 1;
+
+MariaDB [exercise]> select username, count(*) from performers left join ratings on performers.username = ratings.player group by username having count(*) = 1;
++----------+----------+
+| username | count(*) |
++----------+----------+
+| jharden  |        1 |
++----------+----------+
+1 row in set (0.00 sec)
+
+
+
+
+List all the nominees.
+
+select username from performers;
+
+MariaDB [exercise]> select username from performers;
++----------+
+| username |
++----------+
+| boshc    |
+| dwyane   |
+| jharden  |
+| kdurant  |
+| lebronj  |
+| rwestbro |
++----------+
+6 rows in set (0.00 sec)
+
+
+
+
+
+List all the nominees, sorted by their average rating (descending)
+
+select player, SUM(rating) / count(*) as SC from ratings group by player order by SC desc;
+
+MariaDB [exercise]> select player, SUM(rating) / count(*) as SC from ratings group by player order by SC desc;
++----------+--------+
+| player   | SC     |
++----------+--------+
+| lebronj  | 7.5000 |
+| rwestbro | 6.5000 |
+| kdurant  | 5.6667 |
+| dwyane   | 5.5000 |
+| boshc    | 4.5000 |
++----------+--------+
+5 rows in set (0.00 sec)
+
+
+
+
+List all nominees whose rating is above average.
+
+select player, SUM(rating) / count(*) as SC from ratings group by player having SC >= (select AVG(rating) from ratings) order by SC desc;
+
+MariaDB [exercise]> select player, SUM(rating) / count(*) as SC from ratings group by player having SC >= (select AVG(rating) from ratings) order by SC desc;
++----------+--------+
+| player   | SC     |
++----------+--------+
+| lebronj  | 7.5000 |
+| rwestbro | 6.5000 |
++----------+--------+
+2 rows in set (0.00 sec)

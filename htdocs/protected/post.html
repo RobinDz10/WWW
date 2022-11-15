@@ -1,0 +1,214 @@
+<html data-cbscriptallow="true">
+<head></head>
+<body>
+    
+    
+    <blockquote><pre>
+    #!/usr/bin/perl -Tw 2:
+
+    use CGI;
+    use strict;
+    use CGI::Carp qw(fatalsToBrowser);
+      
+    my $query = new CGI;
+    my $topic_directory = &quot;topics&quot;;
+    my $page_title;
+    my ($action, $author, $title, $post, $response_to) = (&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;);
+      
+    print $query-&gt;header;
+      
+    if ($query-&gt;param('action')) {
+      &amp;set_variables;
+      # The form to create a new topic has been submitted
+      if ($action eq &quot;new&quot;) {
+        my $error_message = &amp;validate_form;
+        if (!$error_message) {
+          my $topic = &amp;write_new_topic;
+          $page_title = $title;
+          &amp;print_page_start;
+          &amp;print_success;
+          &amp;print_page_end;
+        }
+        else {
+          $page_title = &quot;New Topic&quot;;
+          &amp;print_page_start;
+          &amp;print_error($error_message);
+          &amp;print_form;
+          &amp;print_page_end;
+          }
+        }
+      elsif ($action == &quot;response&quot;) {
+        &amp;set_variables;
+        my $error_message = &amp;validate_form;
+        if (!$error_message) {
+          &amp;write_response;
+          $page_title = &quot;New response entered&quot;;
+          &amp;print_page_start;
+          &amp;print_response_success;
+          &amp;print_page_end;
+        }
+        else {
+          $page_title = &quot;New response&quot;;
+          &amp;print_page_start;
+          &amp;print_error($error_message);
+          &amp;print_form;
+          &amp;print_page_end;
+        }
+      }
+    }
+    else {
+      $action = &quot;new&quot;;
+      $page_title = &quot;Enter new topic&quot;;
+      &amp;print_page_start;
+      &amp;print_form;
+      &amp;print_page_end;
+    }
+      
+    sub set_variables {
+      $action = ($query-&gt;param('action') || &quot;&quot;);
+      $title = ($query-&gt;param('title') || &quot;&quot;);
+      $author = ($query-&gt;param('author') || &quot;&quot;);
+      $post = ($query-&gt;param('post') || &quot;&quot;);
+      $response_to = ($query-&gt;param('response_to') || &quot;&quot;);
+    }
+      
+    sub print_page_start {
+      print &quot;&lt;html&gt;\n&lt;head&gt;\n&lt;title&gt;$page_title&lt;/title&gt;\n&lt;/head&gt;\n&quot;;
+      print &quot;&lt;body&gt;\n&lt;h1&gt;$page_title&lt;/h1&gt;\n&quot;;
+    }
+      
+    sub print_page_end {
+      print &quot;&lt;p&gt;&lt;a href=\&quot;display.pl\&quot;&gt;view response list&lt;/a&gt; |\n&quot;;
+      print &quot;&lt;a href=\&quot;post.pl\&quot;&gt;create new topic&lt;/a&gt;&lt;/p&gt;\n&quot;;
+      print &quot;&lt;/body&gt;\n&lt;/html&gt;\n&quot;;
+    }
+      
+    sub print_form {
+      print &quot;&lt;p&gt;&lt;table border=\&quot;0\&quot; bgcolor=\&quot;lightgrey\&quot;&gt;\n&quot;;
+      print &quot;&lt;tr&gt;&lt;td colspan=\&quot;2\&quot;&gt;&quot;;
+      if ($action eq &quot;response&quot;) {
+        print &quot;&lt;b&gt;Enter your response below:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+      }
+      else {
+        print &quot;&lt;b&gt;Create your new topic below:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+      }
+      print &quot;&lt;form method=\&quot;post\&quot;&gt;\n&quot;;
+      print &quot;&lt;input type=\&quot;hidden\&quot; name=\&quot;action\&quot; value=\&quot;$action\&quot; /&gt;&quot;;
+      if ($action eq &quot;response&quot;) {
+        print &quot;&lt;input type=\&quot;hidden\&quot; name=\&quot;response_to\&quot; &quot;;
+        print &quot;value=\&quot;$response_to\&quot; /&gt;\n&quot;;
+      }
+      if ($action eq &quot;new&quot;) {
+        print &quot;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Topic Title:&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&quot;;
+        print &quot;&lt;input type=\&quot;text\&quot; name=\&quot;title\&quot; &quot;;
+        print &quot;size=\&quot;40\&quot; maxlength=\&quot;72\&quot; value=\&quot;$title\&quot; /&gt;\n&quot;;
+        print &quot;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+      }
+      print &quot;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;/td&gt;&quot;;
+      print &quot;&lt;td&gt;&lt;input type=\&quot;text\&quot; name=\&quot;author\&quot; &quot;;
+      print &quot;size=\&quot;40\&quot; maxlength=\&quot;72\&quot; value=\&quot;$author\&quot; /&gt;\n&quot;;
+      print &quot;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+      print &quot;&lt;tr&gt;&lt;td colspan=\&quot;2\&quot;&gt;&lt;b&gt;Message body:&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+      print &quot;&lt;tr&gt;&lt;td colspan=\&quot;2\&quot;&gt;\n&quot;;
+      print &quot;&lt;textarea rows=\&quot;10\&quot; cols=\&quot;60\&quot; name=\&quot;post\&quot; &quot;;
+      print &quot;wrap=\&quot;virtual\&quot;&gt;$post&lt;/textarea&gt;&lt;br /&gt;\n&quot;;
+      if ($action eq &quot;response&quot;) {
+        print &quot;&lt;input type=\&quot;submit\&quot; value=\&quot;post response\&quot;&gt;&lt;br /&gt;\n&quot;;
+      }
+      else {
+        print &quot;&lt;input type=\&quot;submit\&quot; value=\&quot;post topic\&quot;&gt;&lt;br /&gt;\n&quot;;
+      }
+      print &quot;&lt;/td&gt;&lt;/tr&gt;\n&quot;;
+      print &quot;&lt;/form&gt;\n&quot;;
+      print &quot;&lt;/table&gt;&lt;/p&gt;\n&quot;;
+    }
+      
+    sub validate_form {
+      my $error_message = '';
+      if ($title eq '' &amp;&amp; $action eq 'new') {
+        $error_message .= &quot;&lt;li&gt;You must enter a title.&lt;/li&gt;\n&quot;;
+      }
+      if ($author eq ''){
+        $error_message .= &quot;&lt;li&gt;You must enter an author.&lt;/li&gt;\n&quot;;
+      }
+      if ($post eq '') {
+        $error_message .= &quot;&lt;li&gt;You must enter a message.&lt;/li&gt;\n&quot;;
+      }
+      if ($error_message eq ''){
+        return undef;
+      }
+      else {
+        return $error_message;
+      }
+    }
+      
+    sub write_new_topic {
+      my $topic = time . $$;
+      open (TOPIC, &quot;&gt; $topic_directory/$topic.xml&quot;)
+        or die &quot;Can't open $topic_directory/$topic.xml&quot;;
+      print TOPIC &quot;&lt;topic&gt;\n&quot;;
+      print TOPIC &quot;&lt;title&gt;$title&lt;/title&gt;\n&quot;;
+      print TOPIC &quot;&lt;author&gt;$author&lt;/author&gt;\n&quot;;
+      print TOPIC &quot;&lt;lastmodified&gt;&quot; . time . &quot;&lt;/lastmodified&gt;\n&quot;;
+      print TOPIC &quot;&lt;post&gt;\n&quot;;
+      $post =~ s/\n/&lt;br \/&gt;\n/g;
+      print TOPIC $post;
+      print TOPIC &quot;&lt;/post&gt;\n&quot;;
+      print TOPIC &quot;&lt;/topic&gt;\n&quot;;
+      close TOPIC;
+      return $topic;
+    }
+      
+    sub write_response {
+      if ($response_to =~ /^([-\@\w.]+)$/) {
+        $response_to = $1;
+      } 
+      else {
+        print &quot;&lt;p&gt;Tainted data submitted. Response not written.&lt;/p&gt;\n&quot;;
+        return;
+      }
+      my $topic_file = $response_to . '.xml';
+      open (TOPIC, &quot;+&gt;&gt; $topic_directory/$topic_file&quot;)
+        or die &quot;Can't open $topic_directory/$topic_file&quot;;
+      flock TOPIC, 2;
+      seek TOPIC, 0, 0;
+      my @topic_text = &lt;TOPIC&gt;;
+      my $topic_text = join '', @topic_text;
+      my $current_time = time;
+      $topic_text =~ s/&lt;lastmodified&gt;(\d+)&lt;\/lastmodified&gt;/&lt;lastmodified&gt;$current_time&lt;\/lastmodified&gt;/x;
+      $topic_text =~ s/&lt;\/responses&gt;//;
+      $topic_text =~ s/&lt;\/topic&gt;//;
+      seek TOPIC, 0, 0;
+      truncate TOPIC, 0;
+      print TOPIC $topic_text;
+      if ($topic_text !~ /&lt;responses&gt;/) {
+        print &quot;&lt;responses&gt;\n&quot;;
+      }
+      print TOPIC &quot;&lt;response&gt;\n&quot;;
+      print TOPIC &quot;&lt;responseauthor&gt;$author&lt;/responseauthor&gt;\n&quot;;
+      $post =~ s/\n/&lt;br \/&gt;\n/g;
+      print TOPIC &quot;&lt;responsepost&gt;$post&lt;/responsepost&gt;\n&quot;;
+      print TOPIC &quot;&lt;/response&gt;\n&quot;;
+      print TOPIC &quot;&lt;/responses&gt;\n&quot;;
+      print TOPIC &quot;&lt;/topic&gt;\n&quot;;
+      close TOPIC;
+    }
+      
+    sub print_success {
+      &quot;&lt;p&gt;&lt;b&gt;Created new topic: $title.&lt;/b&gt;&lt;/p&gt;\n&quot;;
+    }
+      
+    sub print_response_success {
+      print &quot;&lt;p&gt;New response entered.&lt;/p&gt;\n&quot;;
+    }
+      
+    sub print_error {
+      my $error_message = shift(@_);
+      print &quot;&lt;p&gt;Please correct the following errors:&lt;/p&gt;\n&quot;;
+      print &quot;&lt;ul&gt;$error_message&lt;/ul&gt;\n&quot;;
+    }
+      </pre></blockquote>
+    
+     
+    </body></html>
+

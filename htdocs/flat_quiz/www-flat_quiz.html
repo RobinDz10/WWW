@@ -1,0 +1,73 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Lab 09</title></head>
+  <body>
+    <script>
+      function Listener() {
+        var url = "http://silo.cs.indiana.edu:31415/images/"; 
+        this.process = function process() {
+          if (this.message) {
+            if (this.key) { 
+              this.answer = document.forms[0].answer.value; 
+              if (this.answer == this.key) {
+                this.correct += 1; 
+                this.message = "Good! "; 
+              } else {
+                this.message = "Nope. "; 
+              }
+              this.total += 1; 
+              this.message += "Score currently " + this.correct + " out of " + this.total + "."; 
+            } else { 
+              this.correct = 0; 
+              this.total = 0;  
+              this.key = ""; 
+              this.message = "Welcome to a new game, score currently: " + this.correct + " out of " + this.total + ".";
+            }  
+            if (this.questions.length > 0) {  
+              this.key = this.questions.pop(); 
+              this.question = "Whose flag is this: <img src=\"" + 
+                              url + this.key + ".png\"> " + 
+                              "<input type=\"text\" name=\"answer\"> <p>" ; 
+              document.getElementById("question").innerHTML = this.question;
+            } else { 
+              document.getElementById("question").innerHTML = "End of game, are you ready for a new one? <p>"; 
+              this.questions = ["Australia", "China", "Italy", "United States", "South Africa", "Russia", "Spain", "Brazil"]; 
+	      this.correct = 0;
+              this.total = 0;
+              this.key = "";
+	      for (var i = 0; i < 100; i++) {
+                var index = Math.floor(Math.random() * this.questions.length);
+                var other = Math.floor(Math.random() * this.questions.length);
+                var temp = this.questions[index];
+                this.questions[index] = this.questions[other];
+                this.questions[other] = temp;
+              }
+	    } 
+          } else {
+            this.message = "Welcome to the game, are you ready?"; 
+            this.correct = 0; 
+            this.total = 0; 
+            this.key = ""; 
+            this.questions = ["Australia", "China", "Italy", "United States", "South Africa", "Russia", "Spain", "Brazil"]; 
+            for (var i = 0; i < 100; i++) {
+                var index = Math.floor(Math.random() * this.questions.length);
+                var other = Math.floor(Math.random() * this.questions.length);
+                var temp = this.questions[index];
+                this.questions[index] = this.questions[other];
+                this.questions[other] = temp;
+	     }
+	  } 
+          document.getElementById("message").innerHTML = this.message;
+        }
+      } 
+    </script>
+    <form>
+      <span id="question"></span>
+      <span id="message">Welcome to the game, are you ready?</span> <p>
+      Press <input type="button" value="Proceed" onclick="a.process()"> to move on.
+    </p></form>  
+    <script> 
+      a = new Listener(); 
+      a.process(); 
+    </script> 
+  
+
+</body></html>

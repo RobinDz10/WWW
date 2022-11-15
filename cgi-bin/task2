@@ -1,0 +1,47 @@
+#!/usr/local/bin/python3
+
+import cgi
+args = cgi.parse()
+
+print("Content-type:text/html\r\n\r\n")
+print('<h1> This is a La-Liga soccer team </h1>')
+imageList = []
+imageList.append("https://logos-world.net/wp-content/uploads/2020/06/Real-Madrid-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/04/Barcelona-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/06/Sevilla-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Real-Betis-Logo.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/06/atletico-madrid-Logo.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Real-Sociedad-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Athletic-Bilbao-Logo-700x394.png")
+imageList.append("https://logos-world.net/wp-content/uploads/2020/11/Espanyol-Logo-700x394.png")
+size = len(imageList)
+teamName = []
+teamName.append("Real Madrid")
+teamName.append("FC Barcelona")
+teamName.append("Sevilla FC")
+teamName.append("Real Betis")
+teamName.append("Atletico de Madrid")
+teamName.append("Real Sociedad")
+teamName.append("Athletic Bilbao")
+teamName.append("RCD Espanyol")
+
+if 'index' not in args:
+    currIndex = 0
+else:
+    currIndex = int(args['index'][0])
+if currIndex < 0:
+    currIndex = size - 1
+if currIndex >= size:
+    currIndex %= size
+
+print('<h1>' + teamName[currIndex] + '</h1><br>')
+print('<img height="300px" width = "500px" src="' + imageList[currIndex] + '"><br>')
+
+
+nextUrl='http://silo.cs.indiana.edu:36776/cgi-bin/task2?index='
+if currIndex < 0:
+    currIndex = len(imageList) - 1
+elif currIndex >= len(imageList):
+    currIndex = 0
+print('<a style="background:green; font-size:150%; border:1px solid; color:red" href="' + nextUrl + str(currIndex - 1)+'&action=previous'+ '">previous</a>')
+print('<a style="background:green; font-size:150%; border:1px solid; color:red" href="' + nextUrl + str(currIndex + 1)+'&action=next' + '">next</a>')
